@@ -1,0 +1,4 @@
+ubyte ssid_len;
+byte[ssid_len] ssid;
+ubyte pass_len;
+byte[ssid_len] pass;

@@ -1,0 +1,2 @@
+ubyte strip_idx;
+<ushort num_leds;

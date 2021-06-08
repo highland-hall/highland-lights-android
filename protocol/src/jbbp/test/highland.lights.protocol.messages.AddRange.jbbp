@@ -1,0 +1,3 @@
+ubyte strip_idx;
+<ushort start_idx;
+<ushort end_idx;
