@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import highland.lights.protocol.LightInterface
 import java.net.InetAddress
+import android.util.Log
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
             val config_pass : String = findViewById<EditText>(R.id.configPass).text.toString()
 
             val light_interface : LightInterface = LightInterface()
+            Log.d("SSID", config_ssid)
+            Log.d("PASS", config_pass)
             light_interface.sendWifiConfig(light_ip, light_port, config_ssid, config_pass)
             val intent = Intent(this, LightConfigActivity::class.java)
             startActivity(intent)
