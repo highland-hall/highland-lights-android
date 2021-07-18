@@ -18,7 +18,8 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/start_index"
@@ -29,7 +30,8 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/strip_index" />
+        app:layout_constraintTop_toBottomOf="@+id/strip_index"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/end_index"
@@ -40,7 +42,8 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_index" />
+        app:layout_constraintTop_toBottomOf="@+id/start_index"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/strip_index_label"

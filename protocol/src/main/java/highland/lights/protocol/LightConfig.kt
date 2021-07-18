@@ -1,7 +1,7 @@
 package highland.lights.protocol
 
 // @todo Idk if this is reasonable :/
-data class LightConfig(val light_strips : Array<LightStrip>)
+data class LightConfig(val light_strips : Array<LightStrip?>)
 {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
