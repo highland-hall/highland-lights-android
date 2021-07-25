@@ -1,10 +1,8 @@
 package highland.lights.protocol
 
 import com.igormaznitsa.jbbp.io.JBBPBitOutputStream
-import highland.lights.protocol.messages.Header
-import highland.lights.protocol.messages.NetworkConfig
-import highland.lights.protocol.messages.TestRange
-import highland.lights.protocol.messages.TestStrip
+import highland.lights.protocol.messages.*
+import java.awt.Color
 import java.net.InetAddress
 import java.net.Socket
 
@@ -69,6 +67,34 @@ class LightInterface() {
                     test_strip.write(message_stream)
                 }
             }
+            var finalize_header : Header = Header()
+            finalize_header.version = 0.toChar()
+            finalize_header.type = 0x0A.toChar()
+            finalize_header.write(message_stream)
+            config_socket.close()
+        }
+        thread.start()
+    }
+
+    fun setStripToColor(config_ip: InetAddress, config_port: Int, strip_index : Int, color : Triple<Int,Int,Int>)
+    {
+        val thread = Thread {
+            var config_socket : Socket = Socket(config_ip, config_port);
+            var message_stream : JBBPBitOutputStream = JBBPBitOutputStream(config_socket.getOutputStream());
+
+            var strip_color_header = Header()
+            strip_color_header.version = 0.toChar()
+            strip_color_header.type = 0x12.toChar()
+
+            var strip_color_msg = SetStripRGB()
+            val (r,g,b) = color;
+            strip_color_msg.strip_idx = strip_index.toChar()
+            strip_color_msg.red = r.toChar()
+            strip_color_msg.green = g.toChar()
+            strip_color_msg.blue = b.toChar()
+            strip_color_header.write(message_stream)
+            strip_color_msg.write(message_stream)
+            config_socket.close()
         }
         thread.start()
     }

@@ -171,6 +171,16 @@ class LightConfigActivity : AppCompatActivity() {
             Log.d("CONN", devIp.toString());
             Log.d("CONN", devPort.toString());
             lightInterface.sendLightConfig(devIp, devPort, LightConfig(config))
+            var intent = Intent(this, LightControlActivity::class.java)
+            // @todo(apz) Lets make the control activity more clever, i.e. let it discover all
+            //            available strips. This requires a little more embedded work
+            intent.putExtra("devIP", devIp)
+            intent.putExtra("devPort", devPort)
+            // @todo(apz) please fix fucking garbage (clearly we want config to be serializable but
+            //            I am clearly too dim to do so)
+            intent.putExtra("config", (config.map { it?.num_leds }).toTypedArray())
+
+            startActivity(intent)
         }
     }
 
@@ -222,8 +232,4 @@ class LightConfigActivity : AppCompatActivity() {
                 .show()
     }
 
-    fun sendConfig()
-    {
-
-    }
 }

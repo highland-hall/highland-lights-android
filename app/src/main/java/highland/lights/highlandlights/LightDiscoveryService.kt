@@ -1,27 +1,20 @@
 package highland.lights.highlandlights
 
+import android.app.Service
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
-import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import highland.lights.protocol.LightInterface
-import highland.lights.protocol.LightRange
-import java.lang.NullPointerException
-import java.lang.NumberFormatException
 import java.net.InetAddress
 
+// @todo(apz) come back to this when you have more time
+class LightDiscoveryService : Service() {
 
-class MainActivity : AppCompatActivity() {
-
-    private val TAG = "MAIN_ACTIVITY"
+    private val TAG = "LIGHT_DISCOVERY_SERVICE"
     private lateinit var nsdManager : NsdManager
     private val SERVICE_TYPE = "_highlandlights._tcp"
     var availableDevices : ArrayList<Pair<InetAddress, Int>> = arrayListOf<Pair<InetAddress, Int>>()
@@ -75,47 +68,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //startService(Intent(this,LightDiscoveryService::class.java))
 
+    override fun onCreate() {
+        super.onCreate()
         nsdManager = applicationContext.getSystemService(Context.NSD_SERVICE) as NsdManager
         //Search for configs
         nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
-        val button = findViewById<Button>(R.id.sendConfigButton)
-        button?.setOnClickListener()
-        {
-            val light_ip : InetAddress = InetAddress.getByName(findViewById<EditText>(R.id.lightConfigIp).text.toString())
-            val light_port : Int = Integer.parseInt(findViewById<EditText>(R.id.lightConfigPort).text.toString())
-            val config_ssid : String = findViewById<EditText>(R.id.configSSID).text.toString()
-            val config_pass : String = findViewById<EditText>(R.id.configPass).text.toString()
-
-            val light_interface : LightInterface = LightInterface()
-            Log.d("SSID", config_ssid)
-            Log.d("PASS", config_pass)
-            light_interface.sendWifiConfig(light_ip, light_port, config_ssid, config_pass)
-            val intent = Intent(this, LightConfigActivity::class.java)
-            //startActivity(intent)
-        }
-        val setConnButton = findViewById<Button>(R.id.setConnectionButton)
-        setConnButton?.setOnClickListener()
-        {
-            // setup the alert builder
-            Log.d(TAG, "Length of available dev list: ${availableDevices.size}")
-            android.app.AlertDialog.Builder(this)
-                    .setTitle("Choose a device to connect to")
-                    .setItems((availableDevices.map { (inet, port) -> inet.toString()}).toTypedArray(),DialogInterface.OnClickListener
-                    {
-                        dialog, whichButton ->
-                        val intent = Intent(this, LightConfigActivity::class.java)
-                        intent.putExtra("devIP", availableDevices[whichButton].first)
-                        intent.putExtra("devPort", availableDevices[whichButton].second)
-                        startActivity(intent)
-                    })
-                    .create()
-                    .show()
-        }
     }
-
+    override fun onBind(intent: Intent): IBinder {
+        TODO("Return the communication channel to the service.")
+    }
 }

@@ -3,8 +3,9 @@ package highland.lights.protocol
 import com.igormaznitsa.jbbp.io.JBBPBitOutputStream
 import com.igormaznitsa.jbbp.io.JBBPByteOrder
 import java.io.IOException
+import java.io.Serializable
 
-data class LightStrip(var num_leds: Short, val ranges: ArrayList<LightRange>)
+data class LightStrip(var num_leds: Short, val ranges: ArrayList<LightRange>) : Serializable
 {
     @Throws(IOException::class)
     fun write(Out: JBBPBitOutputStream): LightStrip? {

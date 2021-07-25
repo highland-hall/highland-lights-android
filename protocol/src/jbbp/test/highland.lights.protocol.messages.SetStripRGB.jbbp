@@ -1,0 +1,4 @@
+ubyte strip_idx;
+ubyte red;
+ubyte green;
+ubyte blue;
